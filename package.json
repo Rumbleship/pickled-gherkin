@@ -1,0 +1,41 @@
+{
+  "name": "pickled-gherkin",
+  "version": "0.1.0",
+  "authors": [
+    "Mat Henshall <mat.henshall@rumbleship.com>"
+  ],
+  "description": "Rumbleship utility to create cucumber/gherkin tables for Jest",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "build": "NODE_PATH=. tsc -p .",
+    "test": "NODE_PATH=. tsc -b && NODE_PATH=. TZ='America/Los_Angeles' NODE_ENV=test node  node_modules/.bin/jest --detectOpenHandles --maxWorkers=1 --forceExit",
+    "lint": "NODE_PATH=. tslint --project ."
+  },
+  "dependencies": {
+    "class-transformer": "^0.2.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.6",
+    "babel-core": "^7.0.0-beta.3",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.0.0",
+    "prettier": "^1.14.3",
+    "prettier-tslint": "^0.4.0",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.10.0",
+    "tslint-config-airbnb": "^5.9.2",
+    "tslint-config-prettier": "^1.14.0",
+    "tslint-no-focused-test": "^0.5.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
