@@ -1,4 +1,7 @@
 # pickled-gherkin
+
+[![CircleCI](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master.svg?style=svg&circle-token=fc70bbdabdb4e81ae6bbe622156ba2fc7f0edf63)](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master)
+
 **Who**: Typescript and Javascript software developers who use a Behaviour driven development (https://en.wikipedia.org/wiki/Behavior-driven_development) style for test specifications
 
 **What**: Put seed and expectation data in a gherkin-style table embedded in a string literal. that is parsed into Javascript objects and used directly in the executable test code. 
