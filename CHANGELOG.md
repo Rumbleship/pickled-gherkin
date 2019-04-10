@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Function to create an array of objects of instance of a specified class from gherkin table
 * Function to return the gherkin table for an array of objects
 * Tests that also act as a simple example
+
 ### Removed
 ### Changed
 ### Fixed
