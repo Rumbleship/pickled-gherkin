@@ -27,7 +27,7 @@ jobs:
           name: Install Node dependencies
           command: yarn install
       - save_cache:
-          key: v1-node-deps-node-10-{{ checksum "package.json" }}
+          key: v1-node-deps-node-{{ checksum "package.json" }}
           paths:
             - node_modules
       - run:
