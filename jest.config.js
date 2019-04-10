@@ -14,7 +14,7 @@ module.exports = {
     'node_modules.linux'
   ],
   testPathIgnorePatterns: [
-    '/dist/',
+    '/lib/',
     '/node_modules/',
     '/node_modules.mac/',
     '/node_modules.linux/',
