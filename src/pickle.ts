@@ -7,11 +7,10 @@ type ClassType<T> = new (...args: any[]) => T;
  * Function that parses a gherkin table and returns an array of objects
  * for each line. The first line defines the names of the attributes of the return
  * object. Uses class-transformer package for the transformation, so all of the decorators
- * and manipulations are avalaible
- * table
+ * and manipulations are avalaibletable
  * @param cls Class to return an instance for each row
  * @param gherkinTable gherkin style table.
- * @returns gherkinTable
+ * @returns an array of objects of type cls
  */
 export function pickle<T>(
   gherkinTable: string,
@@ -27,9 +26,9 @@ export function pickle<T>(
  * table
  * @param retArray Array to add the rows in
  * @param gherkinTable gherkin style table.
- * @param cls Class to return an instance for each row
+ * @param cls Class to return an instance of for each row
  * @param transform_options
- * @returns gherkinTable passed in unaltered
+ * @returns gherkinTable passed in
  */
 export function picklePassthrough<T>(
   gherkinTable: string,
@@ -66,6 +65,49 @@ export function picklePassthrough<T>(
   return gherkinTable;
 }
 
+/**
+ * Interface for defining the output arrays for the pcikle functions
+ */
+export interface PickleDef<T> {
+  table: string;
+  array: T[];
+  cls?: ClassType<T>;
+}
+/**
+ * Takes a string with gherkin style tables embedded with the text using <Table: name .... >
+ * tags, extracts the tables and creates arrays of objects from them.
+ *
+ * @param embeddedTables the string containing one or more embedded tables
+ * @param targetPickles An array of ojects that define the output arrays @see PickleDef
+ */
+export function pickleTags(embeddedTables: string, targetPickles: Array<PickleDef<any>>) {
+  // RE 1 - (<Table:)(.*)([\s](.*\|.*[\s])+\s+>)
+  // Find the tables embedded between <Table: name \n .... >
+  const tableRE = /(<Table:)(.*)(([\s\S]*?)>)/gim;
+  let matches: RegExpExecArray | null;
+  do {
+    matches = tableRE.exec(embeddedTables);
+    if (matches) {
+      const foundPickle = targetPickles.find(aPickle => {
+        // we know that mathces is not null at this point
+        // so use a no-null assertion
+        return matches![2].trim() === aPickle.table;
+      });
+      if (foundPickle) {
+        picklePassthrough(matches[4], foundPickle.array, foundPickle.cls);
+      } else {
+        throw Error(`Table:${matches[2].trim()} has no definition`);
+      }
+    }
+  } while (matches);
+  return embeddedTables;
+}
+
+/**
+ * Converts an array of Objects to a textual representation
+ * @param pickles An Array of objects
+ * @returns a gherkin text representation of the array of objects
+ */
 export function fromPickles(pickles: object[]): string {
   let gherkin = '';
   const headers: string[] = [];
