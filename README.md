@@ -1,5 +1,8 @@
 # pickled-gherkin
+[![CircleCI](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master.svg?style=svg&circle-token=fc70bbdabdb4e81ae6bbe622156ba2fc7f0edf63)](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master) [![Coverage Status](https://coveralls.io/repos/github/Rumbleship/pickled-gherkin/badge.svg?branch=master&t=Lmfbs2)](https://coveralls.io/github/Rumbleship/pickled-gherkin?branch=master)
+
 **Who**: Typescript and Javascript software developers who use a Behaviour driven development (https://en.wikipedia.org/wiki/Behavior-driven_development) style for test specifications and want to integrate that approach into their Jest test framework and build process
+
 
 **What**: Put seed and expectation data in a gherkin-style (https://docs.cucumber.io/gherkin/reference/) table embedded in a string literal and is parsed into Javascript objects and used directly in the executable test code. 
 

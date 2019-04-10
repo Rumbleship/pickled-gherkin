@@ -12,8 +12,9 @@
   },
   "scripts": {
     "build": "NODE_PATH=. tsc -p .",
-    "test": "NODE_PATH=. tsc -b && NODE_PATH=. TZ='America/Los_Angeles' NODE_ENV=test node  node_modules/.bin/jest --detectOpenHandles --maxWorkers=1 --forceExit",
-    "lint": "NODE_PATH=. tslint --project ."
+    "test": "NODE_PATH=. tsc -p . && NODE_PATH=. NODE_ENV=test jest",
+    "lint": "NODE_PATH=. tslint --project .",
+    "coverage": "NODE_PATH=. tsc -p . && NODE_PATH=. jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "dependencies": {
     "class-transformer": "^0.2.0",
@@ -23,6 +24,7 @@
     "@types/jest": "^24.0.6",
     "babel-core": "^7.0.0-beta.3",
     "babel-jest": "^24.1.0",
+    "coveralls": "^3.0.3",
     "jest": "^24.0.0",
     "prettier": "^1.14.3",
     "prettier-tslint": "^0.4.0",

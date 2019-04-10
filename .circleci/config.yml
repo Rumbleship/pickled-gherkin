@@ -1,0 +1,48 @@
+sversion: 2
+
+workflows:
+  version: 2
+  build_and_publish:
+    jobs:
+      - build
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/repos/pickled-gherkin
+    steps:
+      - restore_cache:
+          keys:
+          - v1-git-{{ .Branch }}
+      - checkout
+      - save_cache:
+          key: v1-git-{{ .Branch }}
+          paths:
+            - ".git"
+      - restore_cache:
+          keys:
+          - v1-node-deps-node-{{ checksum "package.json" }}
+      - run:
+          name: Install Node dependencies
+          command: yarn install
+      - save_cache:
+          key: v1-node-deps-node-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Running tests
+          command: yarn test
+      - run:
+          name: Linting
+          command: yarn lint
+      - run:
+          name: Coverage
+          command: yarn coverage
+
+experimental:
+  notify:
+    branches:
+      only:
+        - dev
+        - master
