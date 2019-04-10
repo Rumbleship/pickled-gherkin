@@ -12,7 +12,7 @@ type ClassType<T> = new (...args: any[]) => T;
  * @param gherkinTable gherkin style table.
  * @returns an array of objects of type cls
  */
-export function pickle<T>(
+export function pickleOne<T>(
   gherkinTable: string,
   cls?: ClassType<T>,
   transform_options?: ClassTransformOptions
@@ -80,7 +80,7 @@ export interface PickleDef<T> {
  * @param embeddedTables the string containing one or more embedded tables
  * @param targetPickles An array of ojects that define the output arrays @see PickleDef
  */
-export function pickleTags(embeddedTables: string, targetPickles: Array<PickleDef<any>>) {
+export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>) {
   // RE 1 - (<Table:)(.*)([\s](.*\|.*[\s])+\s+>)
   // Find the tables embedded between <Table: name \n .... >
   const tableRE = /(<Table:)(.*)(([\s\S]*?)>)/gim;

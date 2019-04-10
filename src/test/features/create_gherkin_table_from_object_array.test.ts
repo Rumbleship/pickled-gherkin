@@ -1,4 +1,4 @@
-import { pickle, fromPickles } from '../../pickle';
+import { pickleOne, fromPickles } from '../../pickle';
 
 describe(`Feature: Create a gherkin style text description from an array of objects`, () => {
   const expectedGherkinTable = ` id | description        | notes
@@ -6,7 +6,7 @@ describe(`Feature: Create a gherkin style text description from an array of obje
  2  | 'description is 2' | note 2
  3  | 'description 3'    | note three
 `;
-  const pickledTable: object[] = pickle(expectedGherkinTable);
+  const pickledTable: object[] = pickleOne(expectedGherkinTable);
 
   describe(`Scenario: Create gherkin table from an array of plain objects
     Given: An array, pickledTable, of plain objects:

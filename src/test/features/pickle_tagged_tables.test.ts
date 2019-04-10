@@ -1,4 +1,4 @@
-import { pickleTags } from '../../pickle';
+import { pickle } from '../../pickle';
 import { Type } from 'class-transformer';
 
 class Order {
@@ -15,7 +15,7 @@ const addedOrders: Order[] = [];
 const givenBuyers: Buyer[] = [];
 describe(`Feature: Parse Gherkin-style tables from multiple tagged tables in a single describe string`, () => {
   describe(
-    pickleTags(
+    pickle(
       `
     Given: There exist in the system the following buyers:
 
@@ -79,7 +79,7 @@ describe(`Feature: Parse Gherkin-style tables from multiple tagged tables in a s
     test(`Then: an Error is thrown`, () => {
       const anArray: object[] = [];
       expect(() => {
-        pickleTags(given, [{ table: 'notThere', array: anArray }]);
+        pickle(given, [{ table: 'notThere', array: anArray }]);
       }).toThrow();
     });
   });
