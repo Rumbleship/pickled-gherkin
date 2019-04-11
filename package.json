@@ -4,7 +4,7 @@
   "authors": [
     "Mat Henshall <mat.henshall@rumbleship.com>"
   ],
-  "main": "index.js",
+  "main": "lib/index.js",
   "description": "Rumbleship utility to create cucumber/gherkin tables for Jest",
   "license": "MIT",
   "private": true,
