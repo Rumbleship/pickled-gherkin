@@ -1,10 +1,26 @@
 # pickled-gherkin
-
 [![CircleCI](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master.svg?style=svg&circle-token=fc70bbdabdb4e81ae6bbe622156ba2fc7f0edf63)](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master) [![Coverage Status](https://coveralls.io/repos/github/Rumbleship/pickled-gherkin/badge.svg?branch=master&t=Lmfbs2)](https://coveralls.io/github/Rumbleship/pickled-gherkin?branch=master)
 
-**Who**: Typescript and Javascript software developers who use a Behaviour driven development (https://en.wikipedia.org/wiki/Behavior-driven_development) style for test specifications
+**Who**: Typescript and Javascript software developers who use a Behaviour driven development (https://en.wikipedia.org/wiki/Behavior-driven_development) style for test specifications and want to integrate that approach into their Jest test framework and build process
 
-**What**: Put seed and expectation data in a gherkin-style table embedded in a string literal. that is parsed into Javascript objects and used directly in the executable test code. 
+
+**What**: Put seed and expectation data in a gherkin-style (https://docs.cucumber.io/gherkin/reference/) table embedded in a string literal and is parsed into Javascript objects and used directly in the executable test code. 
+
+
+Simple text parser for converting a textual representation of a table into Javascript objects. The text uses the Cucumber style gherkin tables for seed data in Jest. Ideal for BDD, TDD 
+
+**why**
+By embedding one copy of test data into the test description that can be directly referenced from test code ensures that the test specifications and executable test scripts are aligned.
+
+There are many excellent test runners and frameworks that fully support the full cucumber and gherkin language. This is the minimalist apporach to incorporating one of the most useful features into standard Jest code and framework.
+
+## Usage
+
+
+```
+function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>): string;
+```
+is the main way you access the functionality in the pickled-gherkin package.
 
 For example using the Jest test runner :
 ``` 
@@ -30,16 +46,12 @@ describe(
                   0002    | 100    | buyer_2 
                   0003    | 10     | buyer_1
             >
-
-            
-
   When: The following new orders are added:
             <Table:  addedOrders
                 order_num | amount | buyer
                 0004      | 05     | buyer_1
                 0005      | 100    | buyer_2
             >
-
           `,
     [
       { table: 'givenBuyers', array: givenBuyers, cls: Buyer },
@@ -62,10 +74,8 @@ describe(
   }
 );
 ```
+There are lower level functions that take a single gherkin-style table as well as a function to take an array of objects and return the gherkin-style table
 
-Simple text parser for converting a textual representation of a table into Javascript objects. The text uses the Cucumber style gherkin tables for seed data in Jest. Ideal for BDD, TDD 
-
-## motivation
-Behaviour driven development (https://en.wikipedia.org/wiki/Behavior-driven_development) has a very straightforward template feature specifications and corresponding acceptance criteria:
+See the test/features/*.test.ts files for examples of these functions.
 
 

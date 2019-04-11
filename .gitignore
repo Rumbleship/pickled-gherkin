@@ -3,7 +3,6 @@ node_modules
 node_modules.*/
 yarn-error.log
 package-lock.json
-dist
 logs/*.log
 
 .DS_Store

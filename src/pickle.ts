@@ -79,8 +79,9 @@ export interface PickleDef<T> {
  *
  * @param embeddedTables the string containing one or more embedded tables
  * @param targetPickles An array of ojects that define the output arrays @see PickleDef
+ * @return the string embeddedTables is returned unaltered
  */
-export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>) {
+export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>): string {
   // RE 1 - (<Table:)(.*)([\s](.*\|.*[\s])+\s+>)
   // Find the tables embedded between <Table: name \n .... >
   const tableRE = /(<Table:)(.*)(([\s\S]*?)>)/gim;
