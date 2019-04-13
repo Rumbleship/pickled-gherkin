@@ -1,7 +1,9 @@
 import { pickle } from '../../pickle';
 import { Type } from 'class-transformer';
+import { IsNumberString } from 'class-validator';
 
 class Order {
+  @IsNumberString()
   order_num!: string;
   @Type(() => Number)
   amount!: number;
@@ -13,40 +15,43 @@ class Buyer {
 const givenOrders: Order[] = [];
 const addedOrders: Order[] = [];
 const givenBuyers: Buyer[] = [];
-describe(`Feature: Parse Gherkin-style tables from multiple tagged tables in a single describe string`, () => {
+describe(`Feature: Parse Gherkin tables from a describe string`, () => {
   describe(
     pickle(
       `
+    Scenario: Parse Gherkin-style and markDown style tables from multiple tagged tables in a single describe string
     Given: There exist in the system the following buyers:
 
-              <Table: givenBuyers
-                  buyer_id 
+          @Table( givenBuyers ) 
+
+                  buyer_id
+                  --------
                   buyer_1  
                   buyer_2   
-              >   
-    And: following orders:
+              
 
-              <Table: givenOrders
+    And: following orders:
+          @Table(givenOrders)
                   order_num | amount | buyer
+                  ----------|--------|--------
                     0001    | 20     | buyer_1
                     0002    | 100    | buyer_2 
                     0003    | 10     | buyer_1
-              >
-
               
 
     When: The following new orders are added:
-              <Table:  addedOrders
+
+         @Table( addedOrders ) 
+
                   order_num | amount | buyer
                   0004      | 05     | buyer_1
                   0005      | 100    | buyer_2
-              >
-
+              
             `,
       [
         { table: 'givenBuyers', array: givenBuyers, cls: Buyer },
-        { table: 'givenOrders', array: givenOrders, cls: Order },
-        { table: 'addedOrders', array: addedOrders, cls: Order }
+        { table: 'givenOrders', array: givenOrders, cls: Order, validate: true },
+        { table: 'addedOrders', array: addedOrders, cls: Order, validate: true }
       ]
     ),
     () => {
@@ -68,13 +73,15 @@ describe(`Feature: Parse Gherkin-style tables from multiple tagged tables in a s
   describe(` 
   Scenario: table is tagged that doesn't have a corresponding Definition passed in 
      ${(given = `Given: an embedded tagged gherkin-style table:
-          <Table: MyTable
+          
+     @Table( MyTable )
+
             col1 | col2
             x    | y
             z    | t
-          >
+          
             
-        When : pickleTags() is called on it without a corresponding table definition:
+        When : pickle is called on it without a corresponding table definition:
      `)} `, () => {
     test(`Then: an Error is thrown`, () => {
       const anArray: object[] = [];

@@ -20,7 +20,7 @@ export declare function pickleOne<T>(gherkinTable: string, cls?: ClassType<T>, t
  * @param transform_options
  * @returns gherkinTable passed in
  */
-export declare function picklePassthrough<T>(gherkinTable: string, retArray: T[], cls?: ClassType<T>, transform_options?: ClassTransformOptions): string;
+export declare function picklePassthrough<T>(gherkinTable: string, retArray: T[], cls?: ClassType<T>, transform_options?: ClassTransformOptions, validate?: boolean): string;
 /**
  * Interface for defining the output arrays for the pcikle functions
  */
@@ -28,6 +28,8 @@ export interface PickleDef<T> {
     table: string;
     array: T[];
     cls?: ClassType<T>;
+    transform_options?: ClassTransformOptions;
+    validate?: boolean;
 }
 /**
  * Takes a string with gherkin style tables embedded with the text using <Table: name .... >

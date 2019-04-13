@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { plainToClass, ClassTransformOptions } from 'class-transformer';
+import { validateSync } from 'class-validator';
 
 type ClassType<T> = new (...args: any[]) => T;
 
@@ -34,7 +35,8 @@ export function picklePassthrough<T>(
   gherkinTable: string,
   retArray: T[],
   cls?: ClassType<T>,
-  transform_options?: ClassTransformOptions
+  transform_options?: ClassTransformOptions,
+  validate?: boolean
 ): string {
   const rows = gherkinTable.split(/[\r\n]+/);
   let headers: string[] = [];
@@ -47,15 +49,25 @@ export function picklePassthrough<T>(
         return col.trim();
       });
       if (headers.length) {
-        const plainObj: any = {};
-        for (const header of headers) {
-          plainObj[header] = columns.shift();
-        }
-        if (cls) {
-          const inst: T = plainToClass<T, {}>(cls, plainObj, transform_options);
-          retArray.push(inst);
+        if (isMarkDownStyleHeaderDivider(columns)) {
+          continue;
         } else {
-          retArray.push(plainObj);
+          const plainObj: any = {};
+          for (const header of headers) {
+            plainObj[header] = columns.shift();
+          }
+          if (cls) {
+            const inst: T = plainToClass<T, {}>(cls, plainObj, transform_options);
+            if (validate) {
+              const errs = validateSync(inst);
+              if (errs.length) {
+                throw errs;
+              }
+            }
+            retArray.push(inst);
+          } else {
+            retArray.push(plainObj);
+          }
         }
       } else {
         headers = columns;
@@ -63,6 +75,9 @@ export function picklePassthrough<T>(
     }
   }
   return gherkinTable;
+}
+function isMarkDownStyleHeaderDivider(plainObj: string[]): boolean {
+  return plainObj[0].startsWith('---');
 }
 
 /**
@@ -72,6 +87,8 @@ export interface PickleDef<T> {
   table: string;
   array: T[];
   cls?: ClassType<T>;
+  transform_options?: ClassTransformOptions;
+  validate?: boolean;
 }
 /**
  * Takes a string with gherkin style tables embedded with the text using <Table: name .... >
@@ -83,8 +100,8 @@ export interface PickleDef<T> {
  */
 export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>): string {
   // RE 1 - (<Table:)(.*)([\s](.*\|.*[\s])+\s+>)
-  // Find the tables embedded between <Table: name \n .... >
-  const tableRE = /(<Table:)(.*)(([\s\S]*?)>)/gim;
+  // Find the tables embedded between @Table(name) \n .... \n\n>
+  const tableRE = /@Table[\s]*\((.*)\)[\s]*[\s]([\s\S]*?)^\s*$/gim;
   let matches: RegExpExecArray | null;
   do {
     matches = tableRE.exec(embeddedTables);
@@ -92,12 +109,18 @@ export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<an
       const foundPickle = targetPickles.find(aPickle => {
         // we know that mathces is not null at this point
         // so use a no-null assertion
-        return matches![2].trim() === aPickle.table;
+        return matches![1].trim() === aPickle.table;
       });
       if (foundPickle) {
-        picklePassthrough(matches[4], foundPickle.array, foundPickle.cls);
+        picklePassthrough(
+          matches[2],
+          foundPickle.array,
+          foundPickle.cls,
+          foundPickle.transform_options,
+          foundPickle.validate
+        );
       } else {
-        throw Error(`Table:${matches[2].trim()} has no definition`);
+        throw Error(`Table:${matches[1].trim()} has no definition`);
       }
     }
   } while (matches);
