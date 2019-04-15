@@ -117,15 +117,14 @@ describe(`Feature: Create object array from gherkin style text description`, () 
   });
   const badPickles: MyPickle[] = [];
   let badPicklesGiven = '';
-  describe(`Scenario: Create an array of Class instances from table which 
-            uses class-validate decorator to validate the columns
-            Given: A a valid one line gherkin Table:
+  describe(`Scenario: Validation errors throw exceptions 
+
+            Given: A valid one line gherkin Table:
                 ${(badPicklesGiven = /* prettier-ignore */ `
                   id | email       | password | registrationDate 
                   1  | malformed   | sparkle  | 20-APR-2019
                 `)}
-                With a malformed email is in one of the rows
-                
+               
             When: The table has been processed as part of a describe using the picklePassthrough 
             function with an array of myPickles and  a ClassType of MyPickle which has an @IsEmail decorator on the email attribute 
             And: validation is requested 
