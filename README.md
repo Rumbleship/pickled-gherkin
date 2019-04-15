@@ -46,19 +46,51 @@ const pythagorean_triples = pickleOne( `
 Tables can be defined with the gherkin-style notation (as above) but the library also supports tables defined with the MarkDown syntax:
 
 ```
-`
             prime_leg | even_leg | hypotenuse
             ----------|----------|-----------
                 3     |    4     |     5
                 5     |   12     |    13
                11     |   60     |    61
                19     |  180     |   181
-         `
 ```         
 
-Instead of plain object arrays, arrays of 'class' instances can be created. The package 'class-transformer' (https://github.com/typestack/class-transformer) is used in this case to transform each row into an instance of the passed in class. This allows for more complex objects to be created that have atttributes whose type is other than a string, such as  numbers and dates.
+Instead of plain object arrays, arrays of 'class' instances can be created. The package 'class-transformer' (https://github.com/typestack/class-transformer) is used to transform each row into an instance of the passed in class. This allows for more complex objects to be created that have atttributes whose type is other than a string, such as  numbers and dates.
 
-Optionally, a validate flag for each table may be set so after a row is converted to the object, the function `validateSync` from the package 'class-validator' (https://github.com/typestack/class-validator) is called. any validation errors are thrown. 
+```
+import { Type } from 'class-transformer';
+import { IsInt } from 'class-validator';
+class PythagoreanTriple {
+  @Type( () => Number )
+  @IsInt()
+  prime_leg: number;
+
+  @Type( () => Number )
+  @IsInt()
+  even_leg: number;
+
+  @Type( () => Number )
+  @IsInt()
+  hypotenuse: number;
+}
+
+// declare the array that the data is added to
+const pythagorean_triples: PythagoreanTriple[] = []; 
+
+pickle( `
+  @Table(pythagorean_triples)
+
+    prime_leg | even_leg | hypotenuse
+        3     |    4     |     5
+        5     |   12     |    13
+       11     |   60     |    61
+       19     |  180     |   181
+
+
+`, 
+[{ table: 'pythagorean_triples', array: pythagorean_triples, cls: PythagoreanTriple, validate: true }]
+);
+```
+Optionally, a validate flag for each table may be set so after a row is converted to the object, the function `validateSync` from the package 'class-validator' (https://github.com/typestack/class-validator) is called. Any validation errors are thrown. 
 
 In the following example, class-transformer and class-validator dcecorators are used to transform the order tables rows to Order instances with the amount converted to a number. The column order_num is checked to ensure that each value is a numeric string.
 
