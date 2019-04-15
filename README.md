@@ -1,13 +1,13 @@
 # pickled-gherkin
 [![CircleCI](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master.svg?style=svg&circle-token=fc70bbdabdb4e81ae6bbe622156ba2fc7f0edf63)](https://circleci.com/gh/Rumbleship/pickled-gherkin/tree/master) [![Coverage Status](https://coveralls.io/repos/github/Rumbleship/pickled-gherkin/badge.svg?branch=master&t=Lmfbs2)](https://coveralls.io/github/Rumbleship/pickled-gherkin?branch=master)
 
-##Motivation
+## Motivation
 
 We wanted to embed test data in an readible form in our test specifications without having to re-enter the data in the executable test scripts. The Cucumber/gherkin language solves this problem, however it doesnt easily integrate into existing our existing Jest and Ava frameworks. 
 
 The approach here is a minimilist approach that doesnt require using a completely different test runner or framework to get the benefit of Behaviour Driven Developmnent (https://en.wikipedia.org/wiki/Behavior-driven_development)
 
-##Usage
+## Usage
 
 Pickled-gherkin is a package for parsing Gherkin tables (https://docs.cucumber.io/gherkin/reference/) into object arrays. For example, the following code creates an array of plain objects whose attributes are strings called 'prime_leg', 'even_leg' and 'hypotenuse'
 
