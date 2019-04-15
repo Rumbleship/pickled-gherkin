@@ -79,8 +79,7 @@
       "internalConsoleOptions": "neverOpen",
       "env": {
         "NODE_PATH": "${workspaceFolder}",
-        "NODE_ENV": "test",
-        "NODE_EXTRA_CA_CERTS": "/usr/local/etc/ssl/cacert.pem"
+        "NODE_ENV": "test"
       },
       "smartStep": false
     },
@@ -99,8 +98,7 @@
       ],
       "env": {
         "NODE_PATH": "${workspaceFolder}",
-        "NODE_ENV": "test",
-        "NODE_EXTRA_CA_CERTS": "/usr/local/etc/ssl/cacert.pem"
+        "NODE_ENV": "test"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
