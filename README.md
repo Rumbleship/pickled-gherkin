@@ -11,7 +11,7 @@ The approach here is a minimilist approach that doesnt require using a completel
 
 Pickled-gherkin is a package for parsing Gherkin tables (https://docs.cucumber.io/gherkin/reference/) into object arrays. For example, the following code creates an array of plain objects whose attributes are strings called 'prime_leg', 'even_leg' and 'hypotenuse'
 
-```
+```typescript
 
 // declare the array that the data is added to
 const pythagorean_triples: object = []; 
@@ -34,7 +34,7 @@ The entries in the table are 'pushed' to the array that is passed in. The `pickl
 
 Alternatively, the array can be created directly from one table:
 
-```
+```typescript
 const pythagorean_triples = pickleOne( `
             prime_leg | even_leg | hypotenuse
                 3     |    4     |     5
@@ -45,7 +45,7 @@ const pythagorean_triples = pickleOne( `
 ```
 Tables can be defined with the gherkin-style notation (as above) but the library also supports tables defined with the MarkDown syntax:
 
-```
+```typescript
             prime_leg | even_leg | hypotenuse
             ----------|----------|-----------
                 3     |    4     |     5
@@ -56,7 +56,7 @@ Tables can be defined with the gherkin-style notation (as above) but the library
 
 Instead of plain object arrays, arrays of 'class' instances can be created. The package 'class-transformer' (https://github.com/typestack/class-transformer) is used to transform each row into an instance of the passed in class. This allows for more complex objects to be created that have atttributes whose type is other than a string, such as  numbers and dates.
 
-```
+```typescript
 import { Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
 class PythagoreanTriple {
@@ -96,7 +96,7 @@ In the following example, class-transformer and class-validator dcecorators are 
 
 It also shows how the arrays defined in the test specification are directly referenced and can be easily used in the Jest 'test.each()' syntax for testing the expectations.
 
-``` 
+```typescript
 import { pickle } from 'pickled-gherkin';
 import { Type } from 'class-transformer';
 import { isNumericString } from 'class-validator';
