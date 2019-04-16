@@ -5,11 +5,11 @@
 
 We wanted to embed test data in an readible form in our test specifications without having to re-enter the data in the executable test scripts. The Cucumber/gherkin language solves this problem, however it doesnt easily integrate into existing our existing Jest and Ava frameworks. 
 
-The approach here is a minimilist approach that doesnt require using a completely different test runner or framework to get the benefit of Behaviour Driven Development (https://en.wikipedia.org/wiki/Behavior-driven_development)
+The approach here is a minimilist approach that doesnt require using a completely different test runner or framework to get the benefit of [Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development).
 
 ## Usage
 
-Pickled-gherkin is a package for parsing Gherkin tables (https://docs.cucumber.io/gherkin/reference/) into object arrays. For example, the following code creates an array of plain objects whose attributes are strings called 'prime_leg', 'even_leg' and 'hypotenuse'
+Pickled-gherkin is a package for parsing Gherkin tables (https://docs.cucumber.io/gherkin/reference/) into object arrays. For example, the following code creates an array of plain objects whose attributes are strings called `prime_leg`, `even_leg` and `hypotenuse`:
 
 ```typescript
 
@@ -18,43 +18,40 @@ const pythagorean_triples: object = [];
 
 pickle( `
   @Table(pythagorean_triples)
-
-    prime_leg | even_leg | hypotenuse
-        3     |    4     |     5
-        5     |   12     |    13
-       11     |   60     |    61
-       19     |  180     |   181
-
-
-`, 
-[{ table: 'pythagorean_triples', array: pythagorean_triples }]
+  prime_leg | even_leg | hypotenuse
+      3     |    4     |     5
+      5     |   12     |    13
+      11     |   60     |    61
+      19     |  180     |   181
+  `, 
+  [{ table: 'pythagorean_triples', array: pythagorean_triples }]
 );
 ```
-The entries in the table are 'pushed' to the array that is passed in. The `pickle` function returns the string that is passed in, so it can be easily used in test frameworks such as Jest or Ava as the description string. 
+The entries in the table are then pushed to the array that is passed in. The `pickle()` function returns the string that is passed in, so it can be easily used in test frameworks such as Jest or Ava as the description string. 
 
 Alternatively, the array can be created directly from one table:
 
 ```typescript
 const pythagorean_triples = pickleOne( `
-            prime_leg | even_leg | hypotenuse
-                3     |    4     |     5
-                5     |   12     |    13
-               11     |   60     |    61
-               19     |  180     |   181
-         `);
+  prime_leg | even_leg | hypotenuse
+      3     |    4     |     5
+      5     |   12     |    13
+     11     |   60     |    61
+     19     |  180     |   181
+`);
 ```
 Tables can be defined with the gherkin-style notation (as above) but the library also supports tables defined with the MarkDown syntax:
 
-```typescript
-            prime_leg | even_leg | hypotenuse
-            ----------|----------|-----------
-                3     |    4     |     5
-                5     |   12     |    13
-               11     |   60     |    61
-               19     |  180     |   181
+```markdown
+prime_leg | even_leg | hypotenuse
+----------|----------|----------
+     3    |    4     |     5
+     5    |   12     |    13
+    11    |   60     |    61
+    19    |  180     |   181
 ```         
 
-Instead of plain object arrays, arrays of 'class' instances can be created. The package 'class-transformer' (https://github.com/typestack/class-transformer) is used to transform each row into an instance of the passed in class. This allows for more complex objects to be created that have atttributes whose type is other than a string, such as  numbers and dates.
+Instead of plain object arrays, arrays of 'class' instances can be created. [TypeStack's](https://github.com/typestack) package [class-transformer](https://github.com/typestack/class-transformer) is used to transform each row into an instance of the class passed in via the `cls` argument to `pickled()` invocation. This allows for more complex objects to be created that have atttributes whose type is other than a string, such as numbers and dates.
 
 ```typescript
 import { Type } from 'class-transformer';
@@ -73,28 +70,26 @@ class PythagoreanTriple {
   hypotenuse: number;
 }
 
-// declare the array that the data is added to
+// declare the array that the generated instances will be pushed into
 const pythagorean_triples: PythagoreanTriple[] = []; 
 
 pickle( `
   @Table(pythagorean_triples)
-
-    prime_leg | even_leg | hypotenuse
-        3     |    4     |     5
-        5     |   12     |    13
-       11     |   60     |    61
-       19     |  180     |   181
-
-
-`, 
-[{ table: 'pythagorean_triples', array: pythagorean_triples, cls: PythagoreanTriple, validate: true }]
+  prime_leg  | even_leg | hypotenuse
+       3     |    4     |     5
+       5     |   12     |    13
+      11     |   60     |    61
+      19     |  180     |   181
+  `, 
+  [{ table: 'pythagorean_triples', array: pythagorean_triples, cls: PythagoreanTriple, validate: true }]
 );
 ```
-Optionally, a validate flag for each table may be set so after a row is converted to the object, the function `validateSync` from the package 'class-validator' (https://github.com/typestack/class-validator) is called. Any validation errors are thrown. 
+Optionally, a Boolean `validate` flag may be set for each table. If this flag is set, validation is delegated to [TypeStack's](https://github.com/typestack) package [class-validator](https://github.com/typestack/class-validator). `validateSync()` is called on each instance once its corresponding row has been converted to an object. All validation errors are thrown. 
 
-In the following example, class-transformer and class-validator dcecorators are used to transform the order tables rows to Order instances with the amount converted to a number. The column order_num is checked to ensure that each value is a numeric string.
 
-It also shows how the arrays defined in the test specification are directly referenced and can be easily used in the Jest 'test.each()' syntax for testing the expectations.
+In the following example, `class-transformer` and `class-validator` decorators are used to transform the order tables rows to `Order` instances with each `amount` converted to a number. The column `order_num` is checked to ensure that each value is a numeric string.
+
+This example also shows how the arrays defined in the test specification are directly referenced and can be easily used in the Jest 'test.each()' syntax for testing the expectations.
 
 ```typescript
 import { pickle } from 'pickled-gherkin';
@@ -131,9 +126,9 @@ describe(
         @Table(givenOrders)
                 order_num | amount | buyer
                 ----------|--------|--------
-                  0001    | 20     | buyer_1
+                  0001    |  20    | buyer_1
                   0002    | 100    | buyer_2 
-                  0003    | 10     | buyer_1
+                  0003    |  10    | buyer_1
             
 
   When: The following new orders are added:
@@ -141,10 +136,10 @@ describe(
         @Table( addedOrders ) 
                 order_num | amount | buyer
                 ----------|--------|--------
-                0004      | 05     | buyer_1
+                0004      |  05    | buyer_1
                 0005      | 100    | buyer_2
             
-          `,
+    `,
     [
       { table: 'givenBuyers', array: givenBuyers, cls: Buyer },
       { table: 'givenOrders', array: givenOrders, cls: Order },
@@ -168,4 +163,4 @@ describe(
 );
 ```
 
-See the test/features/*.test.ts files for further examples.
+See the `test/features/*.test.ts` files for further examples.
