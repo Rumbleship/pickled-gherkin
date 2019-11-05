@@ -17,7 +17,7 @@
     "lint": "NODE_PATH=. tslint --project .",
     "coverage": "NODE_PATH=. tsc -p . && NODE_PATH=. jest --coverage --coverageReporters=text-lcov | coveralls"
   },
-  "dependencies": {
+  "peerDependencies": {
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "reflect-metadata": "^0.1.13"
@@ -26,6 +26,9 @@
     "@types/jest": "^24.0.6",
     "babel-core": "^7.0.0-0",
     "babel-jest": "^24.1.0",
+    "class-transformer": "^0.2.0",
+    "class-validator": "^0.9.1",
+    "reflect-metadata": "^0.1.13",
     "coveralls": "^3.0.3",
     "jest": "^24.0.0",
     "prettier": "^1.14.3",
@@ -37,7 +40,7 @@
     "tslint-config-prettier": "^1.14.0",
     "tslint-no-focused-test": "^0.5.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.4.3"
+    "typescript": "^3.7.0"
   },
   "jest": {
     "testEnvironment": "node"
