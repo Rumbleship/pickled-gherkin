@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Function to return the gherkin table for an array of objects
 * Function that takes a string with multiple embedded gherkin-style tables tagged with a <Table...> tag
 * Tests that also act as a simple example
+* Node 12
 
 ### Removed
 ### Changed
