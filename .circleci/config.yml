@@ -9,7 +9,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:12
     working_directory: ~/repos/pickled-gherkin
     steps:
       - restore_cache:
