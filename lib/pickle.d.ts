@@ -32,7 +32,7 @@ export interface PickleDef<T> {
     validate?: boolean;
 }
 /**
- * Takes a string with gherkin style tables embedded with the text using <Table: name .... >
+ * Takes a string with gherkin style tables embedded with the text using @Table(name)
  * tags, extracts the tables and creates arrays of objects from them.
  *
  * @param embeddedTables the string containing one or more embedded tables

@@ -57,7 +57,7 @@ export function picklePassthrough<T>(
             plainObj[header] = columns.shift();
           }
           if (cls) {
-            const inst: T = plainToClass<T, {}>(cls, plainObj, transform_options);
+            const inst: T = (plainToClass<T, {}>(cls, plainObj, transform_options) as unknown) as T;
             if (validate) {
               const errs = validateSync(inst);
               if (errs.length) {
@@ -91,7 +91,7 @@ export interface PickleDef<T> {
   validate?: boolean;
 }
 /**
- * Takes a string with gherkin style tables embedded with the text using <Table: name .... >
+ * Takes a string with gherkin style tables embedded with the text using @Table(name)
  * tags, extracts the tables and creates arrays of objects from them.
  *
  * @param embeddedTables the string containing one or more embedded tables
@@ -99,8 +99,7 @@ export interface PickleDef<T> {
  * @return the string embeddedTables is returned unaltered
  */
 export function pickle(embeddedTables: string, targetPickles: Array<PickleDef<any>>): string {
-  // RE 1 - (<Table:)(.*)([\s](.*\|.*[\s])+\s+>)
-  // Find the tables embedded between @Table(name) \n .... \n\n>
+  // Find the tables embedded between @Table(name) \n .... \n\n
   const tableRE = /@Table[\s]*\((.*)\)[\s]*[\s]([\s\S]*?)^\s*$/gim;
   let matches: RegExpExecArray | null;
   do {
