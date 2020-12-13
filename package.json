@@ -2,7 +2,8 @@
   "name": "pickled-gherkin",
   "version": "0.1.0",
   "authors": [
-    "Mat Henshall <mat.henshall@rumbleship.com>"
+    "Mat Henshall <mathenshall@gmail.com>",
+    "Isaac Sparling <isaac@rumbleship.com"
   ],
   "main": "lib/index.js",
   "description": "Rumbleship utility to create cucumber/gherkin tables for Jest",
